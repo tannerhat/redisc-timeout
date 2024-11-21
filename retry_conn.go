@@ -50,7 +50,7 @@ func (rc *retryConn) do(cmd string, args ...interface{}) (interface{}, error) {
 			asking = false
 		}
 
-		v, err := rc.c.Do(cmd, args...)
+		v, err := redis.DoWithTimeout(rc.c, rc.tryAgainDelay, cmd, args...)
 		re := ParseRedir(err)
 		if re == nil {
 			if IsTryAgain(err) {
